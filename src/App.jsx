@@ -7,6 +7,7 @@ function App() {
   const products = ofertasData || []
   const [selectedStore, setSelectedStore] = useState('all')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const stores = useMemo(() => {
     const storeSet = new Set(products.map(p => p.platform || 'Amazon'))
@@ -26,8 +27,16 @@ function App() {
     if (selectedCategory !== 'all') {
       result = result.filter(p => (p.category || 'General') === selectedCategory)
     }
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      result = result.filter(p => 
+        p.title.toLowerCase().includes(query) ||
+        (p.category && p.category.toLowerCase().includes(query)) ||
+        (p.platform && p.platform.toLowerCase().includes(query))
+      )
+    }
     return result
-  }, [products, selectedStore, selectedCategory])
+  }, [products, selectedStore, selectedCategory, searchQuery])
 
   const storeLabels = {
     Amazon: { color: '#FF9900', icon: '📦' },
@@ -50,6 +59,23 @@ function App() {
             <img src="/TuttoClick.png" alt="TuttoClick Logo" className="brand-img" />
             <span className="brand-text">TuttoClick</span>
           </a>
+          
+          <div className="search-container">
+            <span className="search-icon">🔍</span>
+            <input 
+              type="text" 
+              className="search-input"
+              placeholder="Buscar productos..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button className="search-clear" onClick={() => setSearchQuery('')}>
+                ✕
+              </button>
+            )}
+          </div>
+          
           <nav className="nav-links">
             <a href="#" className={`nav-link ${selectedStore === 'all' && selectedCategory === 'all' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setSelectedStore('all'); setSelectedCategory('all') }}>
               🔥 Ofertas
@@ -122,7 +148,9 @@ function App() {
               <span>Las Mejores Ofertas en Un Solo Lugar</span>
             </div>
             <h1 className="hero-title">
-              {selectedStore === 'all' && selectedCategory === 'all' ? (
+              {searchQuery ? (
+                <>Resultados para "<span className="highlight">{searchQuery}</span>"</>
+              ) : selectedStore === 'all' && selectedCategory === 'all' ? (
                 <>Descubre <span className="highlight">Ofertas Increíbles</span> en Tecnología</>
               ) : selectedStore !== 'all' ? (
                 <>Ofertas en <span className="highlight">{selectedStore}</span></>
@@ -131,7 +159,9 @@ function App() {
               )}
             </h1>
             <p className="hero-subtitle">
-              {selectedStore === 'all' && selectedCategory === 'all'
+              {searchQuery
+                ? `${filteredProducts.length} producto${filteredProducts.length !== 1 ? 's' : ''} encontrado${filteredProducts.length !== 1 ? 's' : ''}`
+                : selectedStore === 'all' && selectedCategory === 'all'
                 ? 'Equipos seleccionados por expertos. Actualizado diariamente. ¡No dejes pasar estas ofertas exclusivas!'
                 : selectedStore !== 'all'
                 ? `Las mejores ofertas de ${selectedStore} verificadas por nuestro equipo.`
