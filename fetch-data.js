@@ -69,7 +69,8 @@ async function fetchAndParseCSV() {
           originalPrice: rowObject['originalPrice'] || rowObject['Precio Original'] || rowObject['Original Price'] || null,
           rating: parseFloat(rowObject['rating'] || rowObject['Estrellas'] || rowObject['Rating'] || '5'),
           amazonUrl: rowObject['amazonUrl'] || rowObject['Enlace Afiliado'] || rowObject['Amazon URL'] || '#',
-          platform: rowObject['platform'] || rowObject['Plataforma'] || 'Amazon'
+          platform: rowObject['platform'] || rowObject['Plataforma'] || 'Amazon',
+          category: rowObject['category'] || rowObject['Categoria'] || rowObject['Category'] || 'General'
         };
         results.push(product);
       }

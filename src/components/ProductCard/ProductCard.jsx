@@ -8,7 +8,7 @@ function calculateDiscount(price, originalPrice) {
   return Math.round(((op - p) / op) * 100)
 }
 
-export default function ProductCard({ title, image, price, originalPrice, rating, amazonUrl, platform = 'Amazon' }) {
+export default function ProductCard({ title, image, price, originalPrice, rating, amazonUrl, platform = 'Amazon', category = 'General' }) {
   const discount = calculateDiscount(price, originalPrice)
   
   const platformLogos = {
@@ -24,6 +24,7 @@ export default function ProductCard({ title, image, price, originalPrice, rating
   
   return (
     <div className="product-card">
+      <div className="category-tag">{category}</div>
       {discount && (
         <div className="discount-badge">
           <span className="discount-percent">-{discount}%</span>
