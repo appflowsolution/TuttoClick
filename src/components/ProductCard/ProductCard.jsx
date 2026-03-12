@@ -23,8 +23,7 @@ export default function ProductCard({ title, image, price, originalPrice, rating
   const currentPlatform = platformLogos[platform] || platformLogos.default
   
   return (
-    <div className="product-card">
-      <div className="category-tag">{category}</div>
+    <div className="product-card" style={{ '--platform-color': currentPlatform.color }}>
       {discount && (
         <div className="discount-badge">
           <span className="discount-percent">-{discount}%</span>
@@ -49,8 +48,13 @@ export default function ProductCard({ title, image, price, originalPrice, rating
       </div>
       
       <div className="product-content">
-        <div className="platform-badge" style={{ backgroundColor: currentPlatform.color }}>
-          {currentPlatform.name}
+        <div className="title-row">
+          <div className="platform-badge" style={{ backgroundColor: currentPlatform.color }}>
+            {currentPlatform.name}
+          </div>
+          {category && category !== 'General' && (
+            <span className="category-label">{category}</span>
+          )}
         </div>
         
         <h3 className="product-title">{title}</h3>

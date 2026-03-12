@@ -61,6 +61,18 @@ async function fetchAndParseCSV() {
           rowObject[headers[j]] = rowData[j] || '';
         }
         
+        const rawUrl = rowObject['amazonUrl'] || rowObject['Enlace Afiliado'] || rowObject['Amazon URL'] || '';
+        let detectedPlatform = rowObject['platform'] || rowObject['Plataforma'] || '';
+
+        // Detección automática de plataforma basada en la URL si no está especificada o es Amazon por defecto
+        if (!detectedPlatform || detectedPlatform.toLowerCase() === 'amazon') {
+          if (rawUrl.includes('target.com')) detectedPlatform = 'Target';
+          else if (rawUrl.includes('walmart.com')) detectedPlatform = 'Walmart';
+          else if (rawUrl.includes('bestbuy.com')) detectedPlatform = 'BestBuy';
+          else if (rawUrl.includes('ebay.com')) detectedPlatform = 'eBay';
+          else detectedPlatform = 'Amazon';
+        }
+
         const product = {
           id: rowObject['id'] || rowObject['ID'] || String(i),
           title: rowObject['title'] || rowObject['Titulo'] || rowObject['Title'] || `Producto ${i}`,
@@ -68,8 +80,8 @@ async function fetchAndParseCSV() {
           price: rowObject['price'] || rowObject['Precio'] || rowObject['Price'] || '0.00',
           originalPrice: rowObject['originalPrice'] || rowObject['Precio Original'] || rowObject['Original Price'] || null,
           rating: parseFloat(rowObject['rating'] || rowObject['Estrellas'] || rowObject['Rating'] || '5'),
-          amazonUrl: rowObject['amazonUrl'] || rowObject['Enlace Afiliado'] || rowObject['Amazon URL'] || '#',
-          platform: rowObject['platform'] || rowObject['Plataforma'] || 'Amazon',
+          amazonUrl: rawUrl || '#',
+          platform: detectedPlatform,
           category: rowObject['category'] || rowObject['Categoria'] || rowObject['Category'] || 'General'
         };
         results.push(product);

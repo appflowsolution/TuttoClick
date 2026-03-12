@@ -69,7 +69,8 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: var(--platform-color, #f97316);
+  background: linear-gradient(135deg, var(--platform-color, #f97316) 0%, rgba(0,0,0,0.2) 100%);
   color: white;
   padding: 6px 12px;
   border-radius: 20px;
@@ -115,9 +116,25 @@
   color: white;
   font-size: 0.75rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.category-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
 }
 
 .product-content {
@@ -134,11 +151,11 @@
   margin: 0 0 0.75rem 0;
   line-height: 1.4;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.8rem;
+  min-height: 4.2rem;
 }
 
 .product-rating {
@@ -206,7 +223,8 @@
 }
 
 .deal-btn {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+  background: var(--platform-color, #f97316) !important;
+  background: linear-gradient(135deg, var(--platform-color, #f97316) 0%, rgba(0,0,0,0.1) 100%) !important;
   border: none !important;
   color: white !important;
   font-weight: 700 !important;
@@ -214,13 +232,13 @@
   font-size: 1rem !important;
   border-radius: 10px !important;
   transition: all 0.3s ease !important;
-  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
 }
 
 .deal-btn:hover {
-  background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%) !important;
+  filter: brightness(1.1);
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
 }
 
 .btn-icon {
@@ -284,5 +302,88 @@
   
   .savings {
     color: #4ade80;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .discount-badge {
+    top: 8px;
+    left: 8px;
+    padding: 6px 10px;
+  }
+  
+  .discount-percent {
+    font-size: 1rem;
+  }
+  
+  .discount-label {
+    font-size: 0.55rem;
+  }
+  
+  .urgent-badge {
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+  
+  .fire-icon {
+    font-size: 0.85rem;
+  }
+  
+  .product-image-container {
+    padding: 1rem;
+  }
+  
+  .product-content {
+    padding: 1rem;
+  }
+  
+  .title-row {
+    gap: 6px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .platform-badge {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+  
+  .category-label {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+  }
+  
+  .product-title {
+    font-size: 0.9rem;
+    min-height: auto;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+  
+  .current-price {
+    font-size: 1.4rem;
+  }
+  
+  .original-price {
+    font-size: 0.85rem;
+  }
+  
+  .savings {
+    font-size: 0.75rem;
+  }
+  
+  .deal-btn {
+    padding: 12px 16px !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .stock-info {
+    padding: 6px;
+  }
+  
+  .stock-text {
+    font-size: 0.65rem;
   }
 }
