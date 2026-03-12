@@ -61,7 +61,7 @@ async function fetchAndParseCSV() {
           rowObject[headers[j]] = rowData[j] || '';
         }
         
-        const rawUrl = rowObject['amazonUrl'] || rowObject['Enlace Afiliado'] || rowObject['Amazon URL'] || '';
+        const rawUrl = rowObject['amazonUrl'] || rowObject['Enlace Afiliado'] || rowObject['Amazon URL'] || rowObject['Url'] || '';
         let detectedPlatform = rowObject['platform'] || rowObject['Plataforma'] || '';
 
         // Detección automática de plataforma basada en la URL si no está especificada o es Amazon por defecto
