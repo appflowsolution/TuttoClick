@@ -1,0 +1,57 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar {
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.brand-img {
+  height: 48px;
+  width: auto;
+  border-radius: 8px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 3rem 0;
+}
+
+.footer {
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-subtle);
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+/* Amazon Affiliate Disclaimer Rule */
+.affiliate-disclaimer {
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
