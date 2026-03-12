@@ -124,3 +124,20 @@ h1, h2, h3, h4, h5, h6 {
 .justify-between { justify-content: space-between; }
 .gap-4 { gap: 1rem; }
 .grid { display: grid; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}

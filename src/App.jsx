@@ -1,9 +1,46 @@
+import { useState, useMemo } from 'react'
 import ProductCard from './components/ProductCard/ProductCard'
 import './App.css'
 import ofertasData from './data/ofertas.json'
 
 function App() {
-  const products = ofertasData || [];
+  const products = ofertasData || []
+  const [selectedStore, setSelectedStore] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState('all')
+
+  const stores = useMemo(() => {
+    const storeSet = new Set(products.map(p => p.platform || 'Amazon'))
+    return Array.from(storeSet)
+  }, [products])
+
+  const categories = useMemo(() => {
+    const catSet = new Set(products.map(p => p.category || 'General'))
+    return Array.from(catSet)
+  }, [products])
+
+  const filteredProducts = useMemo(() => {
+    let result = products
+    if (selectedStore !== 'all') {
+      result = result.filter(p => (p.platform || 'Amazon') === selectedStore)
+    }
+    if (selectedCategory !== 'all') {
+      result = result.filter(p => (p.category || 'General') === selectedCategory)
+    }
+    return result
+  }, [products, selectedStore, selectedCategory])
+
+  const storeLabels = {
+    Amazon: { color: '#FF9900', icon: '📦' },
+    Target: { color: '#CC0000', icon: '🎯' },
+    Walmart: { color: '#0071CE', icon: '🛒' },
+    BestBuy: { color: '#0046BE', icon: '🎮' },
+    eBay: { color: '#E53238', icon: '🏷️' }
+  }
+
+  const categoryLabels = {
+    electronica: { color: '#8B5CF6', icon: '📱' },
+    General: { color: '#6B7280', icon: '📦' }
+  }
 
   return (
     <div className="app-layout">
@@ -14,9 +51,65 @@ function App() {
             <span className="brand-text">TuttoClick</span>
           </a>
           <nav className="nav-links">
-            <a href="#" className="nav-link active">🔥 Ofertas</a>
-            <a href="#" className="nav-link">Top Ventas</a>
-            <a href="#" className="nav-link">Categorías</a>
+            <a href="#" className={`nav-link ${selectedStore === 'all' && selectedCategory === 'all' ? 'active' : ''}`} onClick={(e) => { e.preventDefault(); setSelectedStore('all'); setSelectedCategory('all') }}>
+              🔥 Ofertas
+            </a>
+            <div className="nav-dropdown">
+              <button className="nav-dropdown-btn">
+                🏪 Tiendas
+              </button>
+              <div className="nav-dropdown-content">
+                <a 
+                  href="#"
+                  className={selectedStore === 'all' ? 'active' : ''}
+                  onClick={(e) => { e.preventDefault(); setSelectedStore('all') }}
+                >
+                  <span>🌐</span>
+                  Todas
+                </a>
+                {stores.map(store => (
+                  <a 
+                    key={store} 
+                    href="#"
+                    className={selectedStore === store ? 'active' : ''}
+                    onClick={(e) => { e.preventDefault(); setSelectedStore(store) }}
+                  >
+                    <span style={{ color: storeLabels[store]?.color || '#666' }}>
+                      {storeLabels[store]?.icon || '🏪'}
+                    </span>
+                    {store}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="nav-dropdown">
+              <button className="nav-dropdown-btn">
+                📂 Categorías
+              </button>
+              <div className="nav-dropdown-content">
+                <a 
+                  href="#"
+                  className={selectedCategory === 'all' ? 'active' : ''}
+                  onClick={(e) => { e.preventDefault(); setSelectedCategory('all') }}
+                >
+                  <span>🌐</span>
+                  Todas
+                </a>
+                {categories.map(cat => (
+                  <a 
+                    key={cat} 
+                    href="#"
+                    className={selectedCategory === cat ? 'active' : ''}
+                    onClick={(e) => { e.preventDefault(); setSelectedCategory(cat) }}
+                  >
+                    <span style={{ color: categoryLabels[cat]?.color || '#666' }}>
+                      {categoryLabels[cat]?.icon || '📁'}
+                    </span>
+                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </a>
+                ))}
+              </div>
+            </div>
           </nav>
         </div>
       </header>
@@ -29,24 +122,34 @@ function App() {
               <span>Las Mejores Ofertas en Un Solo Lugar</span>
             </div>
             <h1 className="hero-title">
-              Descubre <span className="highlight">Ofertas Increíbles</span> en Tecnología
+              {selectedStore === 'all' && selectedCategory === 'all' ? (
+                <>Descubre <span className="highlight">Ofertas Increíbles</span> en Tecnología</>
+              ) : selectedStore !== 'all' ? (
+                <>Ofertas en <span className="highlight">{selectedStore}</span></>
+              ) : (
+                <><span className="highlight">{selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}</span></>
+              )}
             </h1>
             <p className="hero-subtitle">
-              Equipos seleccionados por expertos. Actualizado diariamente. 
-              ¡No dejes pasar estas ofertas exclusivas!
+              {selectedStore === 'all' && selectedCategory === 'all'
+                ? 'Equipos seleccionados por expertos. Actualizado diariamente. ¡No dejes pasar estas ofertas exclusivas!'
+                : selectedStore !== 'all'
+                ? `Las mejores ofertas de ${selectedStore} verificadas por nuestro equipo.`
+                : `Explora las mejores ofertas en ${selectedCategory}.`
+              }
             </p>
             <div className="hero-stats">
               <div className="stat">
-                <span className="stat-number">{products.length}</span>
-                <span className="stat-label">Ofertas Activas</span>
+                <span className="stat-number">{filteredProducts.length}</span>
+                <span className="stat-label">Ofertas</span>
               </div>
               <div className="stat">
-                <span className="stat-number">24/7</span>
-                <span className="stat-label">Actualizado</span>
+                <span className="stat-number">{stores.length}</span>
+                <span className="stat-label">Tiendas</span>
               </div>
               <div className="stat">
-                <span className="stat-number">100%</span>
-                <span className="stat-label">Verificado</span>
+                <span className="stat-number">{categories.length}</span>
+                <span className="stat-label">Categorías</span>
               </div>
             </div>
           </div>
@@ -55,17 +158,40 @@ function App() {
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">
-              <span className="section-icon">🎯</span>
-              Ofertas del Día
+              <span className="section-icon">
+                {selectedStore !== 'all' ? (storeLabels[selectedStore]?.icon || '🏪') : 
+                 selectedCategory !== 'all' ? (categoryLabels[selectedCategory]?.icon || '📁') : '🎯'}
+              </span>
+              {selectedStore === 'all' && selectedCategory === 'all' 
+                ? 'Ofertas del Día' 
+                : selectedStore !== 'all' 
+                ? `Ofertas en ${selectedStore}`
+                : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)
+              }
             </h2>
-            <p className="section-subtitle">Las mejores ofertas seleccionadas especialmente para ti</p>
+            <p className="section-subtitle">
+              {filteredProducts.length > 0 
+                ? `(${filteredProducts.length} ofertas disponibles)`
+                : 'No hay ofertas disponibles'
+              }
+            </p>
           </div>
           
-          <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
-            {products.map(product => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
+          {filteredProducts.length > 0 ? (
+            <div className="grid products-grid">
+              {filteredProducts.map(product => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          ) : (
+            <div className="no-results">
+              <span className="no-results-icon">🔍</span>
+              <p>No hay ofertas disponibles con esos filtros.</p>
+              <button className="btn-reset" onClick={() => { setSelectedStore('all'); setSelectedCategory('all') }}>
+                Ver todas las ofertas
+              </button>
+            </div>
+          )}
         </div>
       </main>
 

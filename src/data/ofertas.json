@@ -7,7 +7,8 @@
     "originalPrice": "349.99",
     "rating": 4.5,
     "amazonUrl": "https://www.amazon.com/Beats-Studio-Pro-Personalized-Compatibility/dp/B0C8PR4W22",
-    "platform": "Amazon"
+    "platform": "Amazon",
+    "category": "electronica"
   },
   {
     "id": "2",
@@ -17,6 +18,51 @@
     "originalPrice": "149.99",
     "rating": 4.4,
     "amazonUrl": "https://www.amazon.com/Roku-Smart-2025-Television-Entertainment/dp/B0F8Y3NRQ7",
-    "platform": "Amazon"
+    "platform": "Amazon",
+    "category": "electronica"
+  },
+  {
+    "id": "3",
+    "title": "Soundcore by Anker Q20i Hybrid Active Noise Cancelling Headphones, Wireless Over-Ear Bluetooth, 40H Long ANC Playtime, Hi-Res Audio, Big Bass, Customize via an App, Transparency Mode",
+    "image": "https://m.media-amazon.com/images/I/51CnDMbXZzL._AC_SL1200_.jpg",
+    "price": "39.99",
+    "originalPrice": "69.99",
+    "rating": 4.6,
+    "amazonUrl": "https://www.amazon.com/soundcore-Cancelling-Headphones-Bluetooth-Transparency/dp/B0C3HCD34R",
+    "platform": "Amazon",
+    "category": "electronica"
+  },
+  {
+    "id": "4",
+    "title": "Logitech Signature M550 Wireless Mouse - Large - Graphite: Bluetooth & USB-A Connection",
+    "image": "https://target.scene7.com/is/image/Target/GUEST_4a0b37b4-5402-409e-bce6-53784990afb0?wid=1000&hei=1000&qlt=80&fmt=webp",
+    "price": "22.49",
+    "originalPrice": "29.99",
+    "rating": 5,
+    "amazonUrl": "https://www.target.com/p/logitech-signature-m550-wireless-mouse-large-graphite/-/A-86227998",
+    "platform": "Target",
+    "category": "electronica"
+  },
+  {
+    "id": "5",
+    "title": "Apple AirPods 4 with Active Noise Cancellation",
+    "image": "https://i5.walmartimages.com/seo/Apple-AirPods-4-with-Active-Noise-Cancellation_970671e7-764d-4536-9f51-666941f35ad3.012d4c1b577966703dc4b6947a77677b.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
+    "price": "159",
+    "originalPrice": "179",
+    "rating": 4.3,
+    "amazonUrl": "https://www.walmart.com/ip/Apple-AirPods-4-with-Active-Noise-Cancellation/11384707978?classType=REGULAR&athbdg=L1600",
+    "platform": "Walmart",
+    "category": "electronica"
+  },
+  {
+    "id": "6",
+    "title": "Baseus - Airpow Lite Power Bank 10000mAh 15W Cosmic - Black",
+    "image": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/90688946-530e-42e2-8775-e5294ffd3206.jpg;maxHeight=1920;maxWidth=900?format=webp",
+    "price": "7.99",
+    "originalPrice": "19.99",
+    "rating": 4.7,
+    "amazonUrl": "https://www.bestbuy.com/product/baseus-airpow-lite-power-bank-10000mah-15w-cosmic-black/J3GWGXKXSC",
+    "platform": "BestBuy",
+    "category": "electronica"
   }
 ]
