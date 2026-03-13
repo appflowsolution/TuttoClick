@@ -46,6 +46,11 @@ async function fetchFromSheets() {
           rowObject[headers[j]] = row[j] || '';
         }
         
+        const active = (rowObject['active'] || '').toLowerCase().trim();
+        if (active !== 'si' && active !== 'yes' && active !== 'true' && active !== '1') {
+          continue;
+        }
+        
         const rawUrl = rowObject['url'] || rowObject['amazonurl'] || rowObject['enlace afiliado'] || '';
         let detectedPlatform = rowObject['plataform'] || rowObject['platform'] || '';
 
