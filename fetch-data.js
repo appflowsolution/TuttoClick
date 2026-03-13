@@ -2,69 +2,53 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ¡IMPORTANTE! Reemplaza este enlace con el enlace CSV público de TU hoja de Google Sheets.
-const GOOGLE_SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTzjgw5ZW7HysdQVgNSLbJ3XWcu25PHdr4u0k4q0UBXnwlnJs0L-fvEMOFlnVjE_xNeTCy3-7DVpMTM/pub?output=csv';
-
+const SPREADSHEET_ID = '1XQoY_4MpFV0nr9Ohm1ZoSClq29pCtwrPNYlezuws8lM';
+const SHEET_RANGE = 'Sheet1';
 const OUTPUT_FILE = path.join(__dirname, 'src', 'data', 'ofertas.json');
+const CREDENTIALS_FILE = path.join(__dirname, 'service-account.json');
 
-function parseCSVLine(line) {
-  const result = [];
-  let current = '';
-  let inQuotes = false;
-  
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === ',' && !inQuotes) {
-      result.push(current.trim().replace(/^"|"$/g, ''));
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-  result.push(current.trim().replace(/^"|"$/g, ''));
-  return result;
-}
-
-async function fetchAndParseCSV() {
+async function fetchFromSheets() {
   try {
-    console.log(`Descargando datos desde: ${GOOGLE_SHEETS_CSV_URL}`);
+    console.log('Descargando datos desde Google Sheets...');
 
-    const response = await fetch(GOOGLE_SHEETS_CSV_URL);
-
-    if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
-    }
-
-    const csvText = await response.text();
-    const lines = csvText.split('\n').filter(line => line.trim() !== '');
+    const gwsCommand = `gws sheets +read --spreadsheet "${SPREADSHEET_ID}" --range "${SHEET_RANGE}" --format json`;
     
-    if (lines.length < 2) {
-      console.warn('El CSV parece estar vacío o solo tiene los encabezados.');
+    const result = execSync(gwsCommand, {
+      env: {
+        ...process.env,
+        GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE: CREDENTIALS_FILE
+      },
+      encoding: 'utf8'
+    });
+
+    const data = JSON.parse(result);
+    const values = data.values;
+
+    if (!values || values.length < 2) {
+      console.warn('El sheet parece estar vacío o solo tiene los encabezados.');
       return;
     }
 
-    const headers = parseCSVLine(lines[0]).map(h => h.trim());
+    const headers = values[0].map(h => h.toLowerCase().trim());
     const results = [];
 
-    for (let i = 1; i < lines.length; i++) {
-      const rowData = parseCSVLine(lines[i]);
+    for (let i = 1; i < values.length; i++) {
+      const row = values[i];
       
-      if (rowData.length > 0 && rowData[0]) {
+      if (row.length > 0 && row[0]) {
         const rowObject = {};
         for (let j = 0; j < headers.length; j++) {
-          rowObject[headers[j]] = rowData[j] || '';
+          rowObject[headers[j]] = row[j] || '';
         }
         
-        const rawUrl = rowObject['amazonUrl'] || rowObject['Enlace Afiliado'] || rowObject['Amazon URL'] || rowObject['Url'] || '';
-        let detectedPlatform = rowObject['platform'] || rowObject['Plataforma'] || '';
+        const rawUrl = rowObject['url'] || rowObject['amazonurl'] || rowObject['enlace afiliado'] || '';
+        let detectedPlatform = rowObject['plataform'] || rowObject['platform'] || '';
 
-        // Detección automática de plataforma basada en la URL si no está especificada o es Amazon por defecto
         if (!detectedPlatform || detectedPlatform.toLowerCase() === 'amazon') {
           if (rawUrl.includes('target.com')) detectedPlatform = 'Target';
           else if (rawUrl.includes('walmart.com')) detectedPlatform = 'Walmart';
@@ -74,15 +58,15 @@ async function fetchAndParseCSV() {
         }
 
         const product = {
-          id: rowObject['id'] || rowObject['ID'] || String(i),
-          title: rowObject['title'] || rowObject['Titulo'] || rowObject['Title'] || `Producto ${i}`,
-          image: rowObject['image'] || rowObject['Imagen'] || rowObject['Image'] || 'https://via.placeholder.com/300',
-          price: rowObject['price'] || rowObject['Precio'] || rowObject['Price'] || '0.00',
-          originalPrice: rowObject['originalPrice'] || rowObject['Precio Original'] || rowObject['Original Price'] || null,
-          rating: parseFloat(rowObject['rating'] || rowObject['Estrellas'] || rowObject['Rating'] || '5'),
+          id: rowObject['id'] || String(i),
+          title: rowObject['title'] || `Producto ${i}`,
+          image: rowObject['image'] || 'https://via.placeholder.com/300',
+          price: rowObject['price'] || '0.00',
+          originalPrice: rowObject['originalprice'] || rowObject['precio original'] || null,
+          rating: parseFloat(rowObject['rating'] || rowObject['estrellas'] || '5'),
           amazonUrl: rawUrl || '#',
           platform: detectedPlatform,
-          category: rowObject['category'] || rowObject['Categoria'] || rowObject['Category'] || 'General'
+          category: rowObject['category'] || rowObject['categoria'] || 'General'
         };
         results.push(product);
       }
@@ -102,4 +86,4 @@ async function fetchAndParseCSV() {
   }
 }
 
-fetchAndParseCSV();
+fetchFromSheets();
