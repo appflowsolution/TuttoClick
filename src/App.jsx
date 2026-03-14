@@ -151,7 +151,7 @@ function App() {
               {searchQuery ? (
                 <>Resultados para "<span className="highlight">{searchQuery}</span>"</>
               ) : selectedStore === 'all' && selectedCategory === 'all' ? (
-                <>Descubre <span className="highlight">Ofertas Increíbles</span> en Tecnología</>
+                <>Descubre <span className="highlight">Ofertas Increíbles</span></>
               ) : selectedStore !== 'all' ? (
                 <>Ofertas en <span className="highlight">{selectedStore}</span></>
               ) : (
@@ -230,7 +230,7 @@ function App() {
           <div className="footer-content">
             <div className="footer-brand">
               <img src="/TuttoClick.png" alt="TuttoClick" className="footer-logo" />
-              <p>Tu fuente confiable de las mejores ofertas en tecnología.</p>
+              <p>Tu fuente confiable de las mejores ofertas.</p>
             </div>
             <p className="affiliate-disclaimer">
               Como Afiliado de Amazon, percibo dinero con las compras elegibles. 
