@@ -55,14 +55,25 @@
     "category": "electronica"
   },
   {
-    "id": "6",
-    "title": "Baseus - Airpow Lite Power Bank 10000mAh 15W Cosmic - Black",
-    "image": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/90688946-530e-42e2-8775-e5294ffd3206.jpg;maxHeight=1920;maxWidth=900?format=webp",
-    "price": "7.99",
-    "originalPrice": "19.99",
-    "rating": 4.7,
-    "amazonUrl": "https://www.bestbuy.com/product/baseus-airpow-lite-power-bank-10000mah-15w-cosmic-black/J3GWGXKXSC",
-    "platform": "BestBuy",
-    "category": "electronica"
+    "id": "7",
+    "title": "iHealth Track Smart Upper Arm Blood Pressure Monitor with Wide Range Cuff That fits Standard to Large Adult Arms, Bluetooth Compatible for iOS & Android Devices",
+    "image": "https://m.media-amazon.com/images/I/71YN9zWHaeL._AC_SL1500_.jpg",
+    "price": "27.98",
+    "originalPrice": "49.98",
+    "rating": 4.4,
+    "amazonUrl": "https://www.amazon.com/iHealth-Wireless-Bluetooth-Compatible-Automatic/dp/B01C5QS1T8",
+    "platform": "Amazon",
+    "category": "salud"
+  },
+  {
+    "id": "8",
+    "title": "Sidefeel Women's Wide Leg Jeans High Waisted Stretchy Raw Hem Zimbaplatinum Denim Pants",
+    "image": "https://m.media-amazon.com/images/I/71COA9r5sYL._AC_SY741_.jpg",
+    "price": "28.04",
+    "originalPrice": "32.99",
+    "rating": 4.4,
+    "amazonUrl": "https://www.amazon.com/Sidefeel-Womens-Jeans-Waisted-Strechy/dp/B0D4QFSLP3",
+    "platform": "Amazon",
+    "category": "ropa"
   }
 ]

@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
+import { google } from 'googleapis';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,18 +16,21 @@ async function fetchFromSheets() {
   try {
     console.log('Descargando datos desde Google Sheets...');
 
-    const gwsCommand = `gws sheets +read --spreadsheet "${SPREADSHEET_ID}" --range "${SHEET_RANGE}" --format json`;
+    const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_FILE, 'utf8'));
     
-    const result = execSync(gwsCommand, {
-      env: {
-        ...process.env,
-        GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE: CREDENTIALS_FILE
-      },
-      encoding: 'utf8'
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
     });
 
-    const data = JSON.parse(result);
-    const values = data.values;
+    const sheets = google.sheets({ version: 'v4', auth });
+    
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: SHEET_RANGE
+    });
+
+    const values = response.data.values;
 
     if (!values || values.length < 2) {
       console.warn('El sheet parece estar vacío o solo tiene los encabezados.');
